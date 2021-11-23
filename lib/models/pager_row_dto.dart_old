@@ -1,0 +1,12 @@
+//no use
+//interface purpose
+abstract class PagerRowDto {
+
+  PagerRowDto();
+
+  //static PagerRowDto fromJson(Map json);
+  //{
+  //  return PagerRowDto();
+  //}
+
+}

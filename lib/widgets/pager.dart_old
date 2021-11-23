@@ -1,0 +1,166 @@
+import 'package:flutter/material.dart';
+
+class Pager extends StatefulWidget {
+  //input parameters
+  ///rows count per page
+  final int pageRows;
+  ///numeric button count
+  final int numBtns;
+  ///show '[x]pages' or not
+  final bool showTotalPages;
+  ///pager button font size
+  final double btnFontSize;
+  ///pager button font color
+  final int btnFontColor;
+  ///pager button background color
+  final int btnBgColor;
+  ///pager button border color
+  final int btnBorderColor;
+  ///[x]pages font size
+  final double textFontSize;
+  ///[x]pages font color
+  final int textFontColor;
+
+  Pager({this.pageRows = 10, this.numBtns = 5, this.showTotalPages = false,
+    this.btnFontSize = 12, this.btnFontColor = 0xFF2F2F3E, 
+    this.btnBgColor = 0xFF2F2F3E, this.btnBorderColor = 0xFF2F2F3E, 
+    this.textFontSize = 12, this.textFontColor = 0xFF2F2F3E
+  }){
+    _me = new _PagerState();
+  }
+  
+
+  //final _PagerState _me;
+
+  static const String First = 'F';
+  static const String Prev = 'P';
+  static const String Next = 'N';
+  static const String Last = 'L';
+
+  late _PagerState _me;
+
+  //PagerState createState() => PagerState();
+
+  @override
+  _PagerState createState(){
+    return _me;
+  }
+
+  Map<String, dynamic> getDtJson([int totalRows = -1, String findJson = '']) {
+    return _me.getDtJson(totalRows, findJson);
+  }
+
+  void setTotalRows(int totalRows) {
+    _me.setTotalRows(totalRows);
+  }
+}
+
+class _PagerState extends State<Pager> {
+  //state variables
+  ///is widget status ok or not
+  bool _isOk = false;
+  ///current page no, base 1
+  int _nowPage = 0;
+  ///total rows
+  int _totalRows = 0;
+
+  //String _nowFun = 'F';
+
+  late TextStyle _textStyle;
+  late TextStyle _btnTextStyle;
+  late ButtonStyle _btnStyle;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      _afterInit();
+    });
+  }
+
+  Future _afterInit() async {
+    ///[x]pages style
+    _textStyle = TextStyle(
+      fontSize: widget.textFontSize,
+      color: Color(widget.textFontColor),
+      //height: 2,
+    );
+
+    _btnTextStyle = TextStyle(
+      fontSize: widget.btnFontSize,
+      color: Color(widget.btnFontColor),
+      //height: 2,
+    );
+
+    ///num button style
+    _btnStyle = ButtonStyle(
+      //textStyle: TextStyle(fontSize: widget.btnFontSize),
+      //foregroundColor: Color(widget.btnFontColor),
+      //backgroundColor: Color(widget.btnBgColor),
+    );
+  }
+
+  void render() {
+    _isOk = true;
+    setState(() {});
+  }
+
+  ///get dataTable json object(Map) for find rows
+  ///@findJson find json string
+  ///@getTotalRows get total rows or not
+  Map<String, dynamic> getDtJson([int totalRows = -1, String findJson = '']) {
+    return {
+      'start': (_nowPage - 1) * widget.pageRows,
+      'length': widget.pageRows,
+      'recordsFiltered': totalRows,
+      'findJson': findJson,
+    };
+  }
+
+  void setTotalRows(int totalRows){
+    _totalRows = totalRows;
+  }
+
+  Row _getWidget() {
+    //temp remark
+    //add '[x]pages' if need
+    //var result = Row();
+    /*
+    var widgets = <Widget>[];
+    if (widget.showTotalPages){
+      var hasRes = _totalRows % widget.pageRows > 0;
+      var totalPages = _totalRows ~/ widget.pageRows + (hasRes ? 1 : 0);
+      widgets.add(Text('{$totalPages}pages', style: _textStyle));
+    }
+    */
+
+    //add num buttons
+    var btns = <Widget>[];
+    btns.add(TextButton(
+      child: Text('1', style: _btnTextStyle),
+      style: _btnStyle, 
+      onPressed: () => onClick('F'),
+    ));
+
+    btns.add(TextButton(
+      child: Text('2', style: _btnTextStyle),
+      style: _btnStyle, 
+      onPressed: () => onClick('F'),
+    ));
+
+    return Row(children: btns);
+  }
+
+  void onClick(String fun) {
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //return (_isOk && _totalRows > 0)
+    return (_totalRows > 0)
+      ? _getWidget()
+      : Container();
+  }
+
+} //class

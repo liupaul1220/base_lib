@@ -1,0 +1,36 @@
+import 'dart:convert';
+//import 'ipager_row.dart';
+//import 'bao_row_dto.dart';
+
+class PagerVo {
+  final int draw;
+  final int recordsFiltered;
+  final List<dynamic> list;
+  //final List<T> data;
+
+  //PagerVo({required this.draw, required this.recordsFiltered, required this.data});
+  PagerVo({required this.draw, required this.recordsFiltered, required this.list});
+
+  //for string to model
+  factory PagerVo.fromJson(String str) {
+    var json = jsonDecode(str);
+    //var list = (json['data'] == null) ? [] : json['data'] as List;
+    //var rows = list.map((row) => IPagerRow.fromJson(row)).toList();
+
+    /* same result
+    List<T> rows = [];
+    var len = list.length;
+    for (var i = 0; i < len; i++) {
+      var item = T.fromJson(list[i]);
+      rows.add(item as T);
+    }
+    */
+
+    return PagerVo(
+      draw: json['draw'],
+      recordsFiltered: json['recordsFiltered'],
+      list: (json['data'] == null) ? [] : json['data'] as List,
+      //data: rows,
+    );
+  }
+}

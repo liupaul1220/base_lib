@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+import '../models/page_btn_dto.dart';
+import 'fun_hp.dart';
+
+//static class
+class PageBtnHp {
+
+  ///rows count per page
+  static const int PageRows = 5;  //temp to 5 for test
+
+  static const String First = 'F';
+  static const String Prev = 'P';
+  static const String Next = 'N';
+  static const String Last = 'L';
+
+  ///get appbar page button dto by nowPage & totalRows
+  ///@nowPge now page no, base 0
+  ///@totalRows total rows count
+  static PageBtnDto getPageBtnDto(int nowPage, int totalRows) {
+    var hasRes = totalRows % PageRows > 0;
+    var totalPages = totalRows ~/ PageRows + (hasRes ? 1 : 0);
+
+    return PageBtnDto(
+      show : (totalRows >= PageRows),
+      nowPage : nowPage,
+      totalPages : totalPages,
+      first : (totalRows > 0),
+      prev : (totalPages >= nowPage),
+      next : (totalPages <= nowPage - 1),
+      last : (totalRows > 0),
+    );
+  }
+
+  ///get start page no
+  ///@type fun type
+  ///@dto now page dto
+  static int getStartPage(String type, PageBtnDto dto) {
+    switch (type) {
+      case First:
+        return 0;
+      case Prev:
+        return dto.nowPage - 1;
+      case Next:
+        return dto.nowPage + 1;
+      case Last:
+        return dto.totalPages - 1;
+      default:
+        return 0;
+    }
+  }
+
+  ///get page buttons row widget
+  static Row getPageBtnRow(Function(String) onPress) {
+    return Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      IconButton(
+        icon: Icon(Icons.skip_previous),
+        onPressed: () => onPress(First),
+        padding: FunHp.PageBtnGap,
+      ),
+      IconButton(
+        icon: Icon(Icons.navigate_before),
+        onPressed: () => onPress(Prev),
+        padding: FunHp.PageBtnGap,
+      ),
+      IconButton(
+        icon: Icon(Icons.navigate_next),
+        onPressed: () => onPress(Next),
+        padding: FunHp.PageBtnGap,
+      ),
+      IconButton(
+        icon: Icon(Icons.skip_next),
+        onPressed: () => onPress(Last),
+        padding: FunHp.PageBtnGap,
+      ),
+    ]);
+  }
+
+} //class

@@ -1,0 +1,26 @@
+///dataTable dto, map to EasyDtDto.cs
+class DtDto {
+
+  ///start row position, base 0
+  int start;
+  ///rows count to display
+  int length;
+  ///-1: re-count filtered rows count(means change jquery condition)
+  int recordsFiltered;
+
+  ///query condition json in string type
+  String findJson;
+
+  //constructor with default value
+  DtDto({this.start = 0, this.length = 10, 
+    this.recordsFiltered = -1, this.findJson = ''});
+
+  ///for string to model
+  Map<String, dynamic> toMap() {
+    return {
+      'start': this.start,
+      'length': this.length,
+      'recordsFiltered': this.recordsFiltered,
+      'findJson': this.findJson};
+  }    
+}

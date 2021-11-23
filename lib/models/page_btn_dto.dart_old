@@ -1,0 +1,23 @@
+class PageBtnDto {
+
+  ///show buttons or not
+  bool show;
+  ///now page, base 0
+  int nowPage;
+  ///total page
+  int totalPages;
+
+  ///first button status
+  bool first;
+  ///previous button status
+  bool prev;
+  ///next button status
+  bool next;
+  ///last button status
+  bool last;
+
+  //constructor with default value
+  PageBtnDto({this.show = false, this.nowPage = 0, this.totalPages = 0, 
+    this.first = false, this.prev = false,
+    this.next = false, this.last = false});
+}
